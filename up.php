@@ -1,38 +1,31 @@
 <?php
-// 1. إعدادات المجلد والحماية
-$target_dir = "uploads/"; // مجلد حفظ الملفات
-$upload_ok = 1;
+// 1. إظهار الأخطاء لتشخيص المشكلة (مهم جداً الآن)
+error_reporting(E_ALL);
+ini_set('display_errors', 1);
+
+$target_dir = "uploads/";
 $message = "";
 
 // إنشاء المجلد إذا لم يكن موجوداً
 if (!file_exists($target_dir)) {
-    mkdir($target_dir, 0777, true);
+    mkdir($target_dir, 0755, true);
 }
 
-// 2. معالجة الرفع عند الضغط على الزر
+// 2. التحقق من عملية الإرسال
 if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_FILES["myFile"])) {
-    $file_name = basename($_FILES["myFile"]["name"]);
-    $target_file = $target_dir . $file_name;
-    $file_type = strtolower(pathinfo($target_file, PATHINFO_EXTENSION));
+    
+    // التحقق من وجود خطأ في الرفع من طرف السيرفر
+    if ($_FILES["myFile"]["error"] !== UPLOAD_ERR_OK) {
+        $message = "خطأ في الرفع: كود الخطأ هو " . $_FILES["myFile"]["error"];
+    } else {
+        $file_name = basename($_FILES["myFile"]["name"]);
+        $target_file = $target_dir . $file_name;
 
-    // التحقق من حجم الملف (أقصى حد 5 ميجابايت)
-    if ($_FILES["myFile"]["size"] > 5000000) {
-        $message = "عذراً، الملف كبير جداً.";
-        $upload_ok = 0;
-    }
-
-    // منع أنواع معينة من الملفات الخطيرة (مثل PHP)
-    if ($file_type == "php" || $file_type == "exe" || $file_type == "js") {
-        $message = "عذراً، لا يُسمح برفع هذا النوع من الملفات لأسباب أمنية.";
-        $upload_ok = 0;
-    }
-
-    // التحقق من عدم وجود أخطاء والبدء في النقل
-    if ($upload_ok == 1) {
+        // محاولة نقل الملف
         if (move_uploaded_file($_FILES["myFile"]["tmp_name"], $target_file)) {
-            $message = "تم رفع الملف بنجاح: " . htmlspecialchars($file_name);
+            $message = "✅ تم الرفع بنجاح: " . htmlspecialchars($file_name);
         } else {
-            $message = "عذراً، حدث خطأ تقني أثناء الرفع.";
+            $message = "❌ فشل نقل الملف. تأكد من صلاحيات مجلد uploads.";
         }
     }
 }
@@ -42,30 +35,31 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_FILES["myFile"])) {
 <html lang="ar" dir="rtl">
 <head>
     <meta charset="UTF-8">
-    <title>صفحة رفع الملفات</title>
+    <title>رفع الملفات - up.php</title>
     <style>
-        body { font-family: sans-serif; display: flex; justify-content: center; margin-top: 50px; background: #f4f4f9; }
-        .upload-container { background: #fff; padding: 20px; border-radius: 8px; box-shadow: 0 2px 10px rgba(0,0,0,0.1); width: 400px; }
-        input[type="file"] { margin: 15px 0; display: block; }
-        .btn { background: #28a745; color: white; border: none; padding: 10px 20px; cursor: pointer; border-radius: 5px; }
-        .btn:hover { background: #218838; }
-        .alert { padding: 10px; margin-bottom: 15px; border-radius: 4px; background: #e2e3e5; color: #383d41; }
+        body { font-family: Tahoma, sans-serif; background: #f0f2f5; text-align: center; padding: 50px; }
+        .box { background: white; padding: 30px; border-radius: 10px; display: inline-block; shadow: 0 4px 6px rgba(0,0,0,0.1); border: 1px solid #ddd; }
+        .msg { padding: 10px; margin-bottom: 20px; border: 1px solid #ccc; background: #fffbcc; }
     </style>
 </head>
 <body>
 
-<div class="upload-container">
-    <h2>رفع ملف جديد</h2>
-    
+<div class="box">
+    <h2>نظام رفع الملفات</h2>
+
     <?php if ($message != ""): ?>
-        <div class="alert"><?php echo $message; ?></div>
+        <div class="msg"><?php echo $message; ?></div>
     <?php endif; ?>
 
-    <form action="upload.php" method="post" enctype="multipart/form-data">
-        <label>اختر الملف من جهازك:</label>
+    <form action="up.php" method="POST" enctype="multipart/form-data">
         <input type="file" name="myFile" required>
-        <button type="submit" class="btn">ابدأ الرفع الآن</button>
+        <br><br>
+        <button type="submit" style="padding: 10px 20px; cursor: pointer;">رفع الملف الآن</button>
     </form>
+    
+    <p style="font-size: 12px; color: #666; margin-top: 20px;">
+        المسار الحالي على السيرفر: <?php echo $_SERVER['PHP_SELF']; ?>
+    </p>
 </div>
 
 </body>
