@@ -31,8 +31,16 @@
         .btn-submit { width: 100%; padding: 14px; border-radius: 12px; border: none; background: linear-gradient(135deg, var(--primary), var(--accent)); color: white; font-size: 1rem; font-weight: 600; cursor: pointer; transition: 0.3s; }
         .btn-submit:hover { transform: translateY(-2px); box-shadow: 0 8px 20px rgba(99, 102, 241, 0.4); }
 
-        .whatsapp-link { display: flex; align-items: center; justify-content: center; gap: 10px; margin-top: 20px; color: #22c55e; text-decoration: none; font-weight: 600; font-size: 0.95rem; transition: 0.3s; }
-        .whatsapp-link:hover { opacity: 0.8; }
+        /* تنسيق أزرار التواصل الاجتماعي */
+        .social-links { display: flex; flex-direction: column; gap: 12px; margin-top: 20px; }
+        
+        .social-btn { display: flex; align-items: center; justify-content: center; gap: 10px; padding: 12px; border-radius: 12px; text-decoration: none; font-weight: 600; font-size: 0.95rem; transition: 0.3s; }
+        
+        .whatsapp-btn { background-color: rgba(34, 197, 94, 0.1); color: #22c55e; border: 1px solid rgba(34, 197, 94, 0.2); }
+        .whatsapp-btn:hover { background-color: #22c55e; color: white; }
+
+        .snap-btn { background-color: rgba(255, 252, 0, 0.1); color: #FFFC00; border: 1px solid rgba(255, 252, 0, 0.2); }
+        .snap-btn:hover { background-color: #FFFC00; color: black; }
 
         #status-msg { margin-top: 15px; font-size: 0.9rem; display: none; padding: 10px; border-radius: 8px; }
         #status-msg.success { display: block; background: rgba(34, 197, 94, 0.1); color: #22c55e; }
@@ -61,16 +69,23 @@
 
             <hr style="border: 0; border-top: 1px solid rgba(255,255,255,0.05); margin: 20px 0;">
             
-            <a href="https://wa.me/966538882227" class="whatsapp-link"> <i class="fab fa-whatsapp" style="font-size: 1.4rem;"></i>
-                تواصل معنا عبر واتساب
-            </a>
+            <div class="social-links">
+                <a href="https://wa.me/966538882227" class="social-btn whatsapp-btn">
+                    <i class="fab fa-whatsapp" style="font-size: 1.3rem;"></i>
+                    تواصل معنا عبر واتساب
+                </a>
+
+                <a href="https://www.snapchat.com/add/majed6683" class="social-btn snap-btn">
+                    <i class="fab fa-snapchat" style="font-size: 1.3rem;"></i>
+                    تابعنا على سناب شات
+                </a>
+            </div>
         </div>
 
         <div style="margin-top: 2rem; color: #475569; font-size: 0.8rem;">WWW.MAJEDSTORE.COM</div>
     </div>
 
     <script>
-        // كود سحري لمنع الانتقال لموقع آخر عند الإرسال
         const form = document.getElementById("contact-form");
         const status = document.getElementById("status-msg");
         const btn = document.getElementById("submit-btn");
