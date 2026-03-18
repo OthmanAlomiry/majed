@@ -27,18 +27,16 @@
             align-items: center;
             justify-content: center;
             padding: 20px;
-            position: relative;
-            overflow: hidden;
+            overflow-x: hidden;
         }
 
-        /* خلفية جمالية */
         .bg-glow {
             position: fixed;
             top: 0;
             left: 0;
             width: 100%;
             height: 100%;
-            background: radial-gradient(circle at center, rgba(99,102,241,0.1) 0%, rgba(15,23,42,1) 80%);
+            background: radial-gradient(circle at 50% 50%, rgba(99,102,241,0.15) 0%, rgba(15,23,42,1) 80%);
             z-index: -1;
         }
 
@@ -46,7 +44,12 @@
             width: 100%;
             max-width: 450px;
             text-align: center;
-            z-index: 1;
+            animation: fadeIn 0.8s ease-out;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
         }
 
         .logo {
@@ -57,12 +60,13 @@
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
             display: inline-block;
+            letter-spacing: 1px;
         }
 
         .card {
             background: rgba(255, 255, 255, 0.03);
             backdrop-filter: blur(15px);
-            padding: 30px;
+            padding: 40px 30px;
             border-radius: 24px;
             border: 1px solid rgba(255, 255, 255, 0.1);
             box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
@@ -72,24 +76,25 @@
             font-size: 1.4rem;
             margin-bottom: 1.5rem;
             color: #f1f5f9;
+            font-weight: 500;
         }
 
         .input-group {
-            margin-bottom: 15px;
+            margin-bottom: 20px;
             text-align: right;
         }
 
         label {
             display: block;
             margin-bottom: 8px;
-            font-size: 0.9rem;
+            font-size: 0.85rem;
             color: #94a3b8;
             margin-right: 5px;
         }
 
         input, textarea {
             width: 100%;
-            padding: 14px;
+            padding: 14px 18px;
             border-radius: 12px;
             border: 1px solid rgba(255, 255, 255, 0.1);
             background: rgba(15, 23, 42, 0.6);
@@ -102,12 +107,12 @@
         input:focus, textarea:focus {
             border-color: var(--primary);
             background: rgba(15, 23, 42, 0.8);
-            box-shadow: 0 0 0 4px rgba(99, 102, 241, 0.1);
+            box-shadow: 0 0 0 4px rgba(99, 102, 241, 0.15);
         }
 
         button {
             width: 100%;
-            padding: 14px;
+            padding: 16px;
             border-radius: 12px;
             border: none;
             background: linear-gradient(135deg, var(--primary), var(--accent));
@@ -115,26 +120,31 @@
             font-size: 1.1rem;
             font-weight: 600;
             cursor: pointer;
-            transition: all 0.3s ease;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
             margin-top: 10px;
         }
 
         button:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 10px 20px -5px rgba(99, 102, 241, 0.4);
+            transform: translateY(-3px);
+            box-shadow: 0 10px 25px -5px rgba(99, 102, 241, 0.5);
+            filter: brightness(1.1);
         }
 
-        .footer-link {
-            margin-top: 2rem;
-            display: block;
-            color: #64748b;
-            text-decoration: none;
-            font-size: 0.9rem;
-            transition: color 0.3s;
+        button:active {
+            transform: translateY(-1px);
         }
 
-        .footer-link:hover {
-            color: var(--primary);
+        .footer-text {
+            margin-top: 2.5rem;
+            color: #475569;
+            font-size: 0.85rem;
+            letter-spacing: 1px;
+        }
+
+        /* تحسين العرض في الجوالات الصغيرة */
+        @media (max-width: 400px) {
+            .card { padding: 30px 20px; }
+            .logo { font-size: 2rem; }
         }
     </style>
 </head>
@@ -146,24 +156,26 @@
         <div class="logo">MAJED STORE</div>
         
         <div class="card">
-            <h2>أرسل لنا رسالة</h2>
+            <h2>يسعدنا تواصلك معنا</h2>
             
-            <form action="https://formspree.io/f/xoqgypne" method="POST">
+            <form action="https://formspree.io/f/mjgapdnd" method="POST">
                 <div class="input-group">
-                    <label>بريدك الإلكتروني</label>
+                    <label>البريد الإلكتروني</label>
                     <input type="email" name="email" placeholder="example@gmail.com" required>
                 </div>
                 
                 <div class="input-group">
-                    <label>رسالتك</label>
-                    <textarea name="message" rows="5" placeholder="كيف يمكننا مساعدتك؟" required></textarea>
+                    <label>نص الرسالة</label>
+                    <textarea name="message" rows="5" placeholder="اكتب استفسارك هنا..." required></textarea>
                 </div>
+                
+                <input type="text" name="_gotcha" style="display:none">
                 
                 <button type="submit">إرسال الرسالة</button>
             </form>
         </div>
 
-        <a href="http://www.majedstore.com" class="footer-link">www.majedstore.com</a>
+        <div class="footer-text">WWW.MAJEDSTORE.COM</div>
     </div>
 
 </body>
